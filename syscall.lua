@@ -1385,7 +1385,7 @@ end
 
 -- used for pointer returns, -1 is failure; removed gc for mem
 local function retptr(ret)
-  if ffi.cast("long", ret) == -1 then return errorret() end
+  if ffi.cast("long", ret) == ffi.new('long', -1) then return errorret() end
   return ret
 end
 
