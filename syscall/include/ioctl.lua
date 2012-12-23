@@ -12,14 +12,14 @@ local lshift = bit.lshift
 local rshift = bit.rshift
 
 -- include types to get sizes
-local t = require "include.types"
+local t = require "syscall.include.types"
 local s = t.s
 
-local h = require "include.helpers"
+local h = require "syscall.include.helpers"
 local stringflag = h.stringflag
 
 local ffi = require "ffi"
-local ok, arch = pcall(require, "include.ioctl-" .. ffi.arch) -- architecture specific definitions
+local ok, arch = pcall(require, "syscall.include.ioctl-" .. ffi.arch) -- architecture specific definitions
 if not ok then arch = {} end
 
 local ioctl = {}
@@ -51,9 +51,9 @@ local IOC_READWRITE = IOC_READ + IOC_WRITE
 
 local function _IOC(dir, tp, nr, size)
   if type(tp) == "string" then tp = tp:byte() end
-  return bor(lshift(dir, IOC_DIRSHIFT), 
-	 lshift(tp, IOC_TYPESHIFT), 
-	 lshift(nr, IOC_NRSHIFT), 
+  return bor(lshift(dir, IOC_DIRSHIFT),
+	 lshift(tp, IOC_TYPESHIFT),
+	 lshift(nr, IOC_NRSHIFT),
 	 lshift(size, IOC_SIZESHIFT))
 end
 

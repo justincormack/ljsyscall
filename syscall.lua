@@ -13,14 +13,14 @@ local S = {} -- exported functions
 local ffi = require "ffi"
 local bit = require "bit"
 
-require "include.headers"
-local c = require "include.constants"
-local types = require "include.types"
+require "syscall.include.headers"
+local c = require "syscall.include.constants"
+local types = require "syscall.include.types"
 
-local h = require "include.helpers"
+local h = require "syscall.include.helpers"
 local split = h.split
 
-local ioctl = require "include.ioctl" -- avoids dependency issues
+local ioctl = require "syscall.include.ioctl" -- avoids dependency issues
 c.IOCTL = ioctl.IOCTL
 
 S.C = setmetatable({}, {__index = ffi.C})
