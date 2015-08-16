@@ -998,6 +998,11 @@ mt.cpu_set = {
     for i = 0, s.cpu_set * 8 - 1 do if set:get(i) then tab[#tab + 1] = i end end
     return "{" .. table.concat(tab, ",") .. "}"
   end,
+  __len = function(set)
+    local n = 0
+    for i = 0, s.cpu_set * 8 - 1 do if set:get(i) then n=n+1 end end
+    return n
+  end
 }
 
 addtype(types, "cpu_set", "struct cpu_set_t", mt.cpu_set)
