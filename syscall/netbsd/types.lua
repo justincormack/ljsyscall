@@ -1,31 +1,28 @@
 -- NetBSD types
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, assert, tonumber, tostring, setmetatable, pairs, unpack,
+type, table, string =
+require, assert, tonumber, tostring, setmetatable, pairs, unpack,
+type, table, string
 
 local function init(types)
 
-local abi = require "syscall.abi"
 
 local version = require "syscall.netbsd.version".version
 
-local t, pt, s, ctypes = types.t, types.pt, types.s, types.ctypes
+local t, pt, s = types.t, types.pt, types.s
 
 local ffi = require "ffi"
 local bit = require "syscall.bit"
 
-local i6432, u6432 = bit.i6432, bit.u6432
+local i6432 = bit.i6432
 
 local h = require "syscall.helpers"
 
-local addtype, addtype_var, addtype_fn, addraw2 = h.addtype, h.addtype_var, h.addtype_fn, h.addraw2
-local ptt, reviter, mktype, istype, lenfn, lenmt, getfd, newfn
-  = h.ptt, h.reviter, h.mktype, h.istype, h.lenfn, h.lenmt, h.getfd, h.newfn
-local ntohl, ntohl, ntohs, htons, octal = h.ntohl, h.ntohl, h.ntohs, h.htons, h.octal
+local addtype, addtype_var, addtype_fn = h.addtype, h.addtype_var, h.addtype_fn
+local reviter, mktype, lenmt, newfn
+  = h.reviter, h.mktype, h.lenmt, h.newfn
+local octal = h.octal
 
 local c = require "syscall.netbsd.constants"
 

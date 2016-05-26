@@ -1,11 +1,6 @@
 -- abstract different bit libraries in different lua versions
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, pcall = require, error, tonumber, pcall
 
 -- TODO add 64 bit operations here
 
@@ -83,7 +78,7 @@ function bit.lshift64(a, n)
   if n == 0 then return a end
   local aa, bb = i6432(a), i6432(0)
   local ah, al = aa:to32()
-  local bl, bh = 0, 0
+  local bl, bh
   if n < 32 then
     bh, bl = bit.lshift(ah, n), bit.lshift(al, n)
     bh = bit.bor(bh, bit.rshift(al, 32 - n))
@@ -98,7 +93,7 @@ function bit.rshift64(a, n)
   if n == 0 then return a end
   local aa, bb = i6432(a), i6432(0)
   local ah, al = aa:to32()
-  local bl, bh = 0, 0
+  local bl, bh
   if n < 32 then
     bh, bl = bit.rshift(ah, n), bit.rshift(al, n)
     bl = bit.bor(bl, bit.lshift(ah, 32 - n))

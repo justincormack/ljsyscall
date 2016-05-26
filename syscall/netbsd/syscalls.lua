@@ -1,13 +1,6 @@
 -- BSD specific syscalls
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
-
-local abi = require "syscall.abi"
+local require, type = require, type
 
 return function(S, hh, c, C, types)
 
@@ -17,11 +10,10 @@ local errno = ffi.errno
 
 local t, pt, s = types.t, types.pt, types.s
 
-local ret64, retnum, retfd, retbool, retptr, retiter = hh.ret64, hh.retnum, hh.retfd, hh.retbool, hh.retptr, hh.retiter
+local retnum, retfd, retbool = hh.retnum, hh.retfd, hh.retbool
 
 local h = require "syscall.helpers"
-local istype, mktype, getfd = h.istype, h.mktype, h.getfd
-local octal = h.octal
+local mktype, getfd = h.mktype, h.getfd
 
 function S.paccept(sockfd, addr, addrlen, set, flags)
   if set then set = mktype(t.sigset, set) end

@@ -1,24 +1,20 @@
 -- syscalls shared by BSD based operating systems
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, tostring, setmetatable, pairs, type, table =
+require, error, tonumber, tostring, setmetatable, pairs, type, table
 
 local abi = require "syscall.abi"
 
 return function(S, hh, c, C, types)
 
-local ret64, retnum, retfd, retbool, retptr, retiter = hh.ret64, hh.retnum, hh.retfd, hh.retbool, hh.retptr, hh.retiter
+local retnum, retfd, retbool, retiter = hh.retnum, hh.retfd, hh.retbool, hh.retiter
 
 local ffi = require "ffi"
 local errno = ffi.errno
 
 local h = require "syscall.helpers"
 
-local istype, mktype, getfd = h.istype, h.mktype, h.getfd
+local mktype, getfd = h.mktype, h.getfd
 local octal, split = h.octal, h.split
 
 local t, pt, s = types.t, types.pt, types.s
@@ -103,7 +99,7 @@ end
 local allmeta = {
   __tostring = function(t)
     local names = {}
-    for k, v in pairs(t) do names[#names + 1] = k end
+    for k, _ in pairs(t) do names[#names + 1] = k end
     table.sort(names, sysctlsort)
     local tt = {}
     for i, v in pairs(names) do tt[i] = v .. " = " .. tostring(t[v]) end
@@ -118,7 +114,7 @@ local function allsysctl()
   for k, v in pairs(sysctltypes) do
     if type(v) == "table" and type(v[2]) == "string" then v = v[2] end
     if type(v) == "string" then
-      local res, err = S.sysctl(k)
+      local res, _ = S.sysctl(k)
       if res then all[k] = res end
     end
   end

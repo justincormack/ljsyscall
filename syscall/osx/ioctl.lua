@@ -1,11 +1,6 @@
 -- ioctls, filling in as needed
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require = require
 
 local function init(types)
 
@@ -63,8 +58,6 @@ end
 local _IO     = function(ch, nr)     return _IOC(IOC.VOID, ch, nr, 0) end
 local _IOR    = function(ch, nr, tp) return _IOC(IOC.OUT, ch, nr, tp) end
 local _IOW    = function(ch, nr, tp) return _IOC(IOC.IN, ch, nr, tp) end
-local _IOWR   = function(ch, nr, tp) return _IOC(IOC.INOUT, ch, nr, tp) end
-local _IOWINT = function(ch, nr)     return _IOC(IOC.VOID, ch, nr, "int") end
 
 local ioctl = strflag {
   -- tty ioctls

@@ -1,12 +1,8 @@
 -- This simply returns ABI information
 -- Makes it easier to substitute for non-ffi solution, eg to run tests
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, pcall =
+require, error, pcall
 
 local ffi = require "ffi"
 

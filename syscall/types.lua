@@ -5,12 +5,10 @@
 
 -- note that some types will be overridden, eg default fd type will have metamethods added
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string, math = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string, math
+local require, error, assert, tonumber, tostring, pairs, ipairs, type, table,
+string, math =
+require, error, assert, tonumber, tostring, pairs, ipairs, type, table,
+string, math
 
 local function init(c, ostypes, bsdtypes)
 
@@ -21,11 +19,10 @@ local bit = require "syscall.bit"
 
 local h = require "syscall.helpers"
 
-local ptt, reviter, mktype, istype, lenfn, lenmt, getfd, newfn
-  = h.ptt, h.reviter, h.mktype, h.istype, h.lenfn, h.lenmt, h.getfd, h.newfn
-local addtype, addtype_var, addtype_fn, addraw2 = h.addtype, h.addtype_var, h.addtype_fn, h.addraw2
-local ntohl, ntohl, ntohs, htons = h.ntohl, h.ntohl, h.ntohs, h.htons
-local split, trim, strflag = h.split, h.trim, h.strflag
+local reviter, istype, getfd, newfn
+  = h.reviter, h.istype, h.getfd, h.newfn
+local addtype, addtype_var, addraw2 = h.addtype, h.addtype_var, h.addraw2
+local split, trim = h.split, h.trim
 local align = h.align
 
 local types = {t = {}, pt = {}, s = {}, ctypes = {}}
@@ -241,7 +238,7 @@ local function sigaddsets(set, sigs) -- allow multiple
   if type(sigs) ~= "string" then return sigaddset(set, sigs) end
   set = t.sigset(set)
   local a = split(",", sigs)
-  for i, v in ipairs(a) do
+  for _, v in ipairs(a) do
     local s = trim(v)
     local sig = c.SIG[s]
     if not sig then error("invalid signal: " .. v) end -- don't use this format if you don't want exceptions, better than silent ignore
@@ -254,7 +251,7 @@ local function sigdelsets(set, sigs) -- allow multiple
   if type(sigs) ~= "string" then return sigdelset(set, sigs) end
   set = t.sigset(set)
   local a = split(",", sigs)
-  for i, v in ipairs(a) do
+  for _, v in ipairs(a) do
     local s = trim(v)
     local sig = c.SIG[s]
     if not sig then error("invalid signal: " .. v) end -- don't use this format if you don't want exceptions, better than silent ignore
@@ -277,7 +274,7 @@ mt.sigset = {
     if not str then return ffi.new(tp) end
     local f = ffi.new(tp)
     local a = split(",", str)
-    for i, v in ipairs(a) do
+    for _, v in ipairs(a) do
       local st = trim(v)
       local sig = c.SIG[st]
       if not sig then error("invalid signal: " .. v) end -- don't use this format if you don't want exceptions, better than silent ignore

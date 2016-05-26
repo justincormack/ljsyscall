@@ -1,13 +1,13 @@
 -- misc helper functions that we use across the board
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string, math = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string, math
+local require, error, tonumber, tostring,
+setmetatable, pairs, ipairs, rawget,
+type, table, math =
+require, error, tonumber, tostring,
+setmetatable, pairs, ipairs, rawget,
+type, table, math
 
-local debug, collectgarbage = require "debug", collectgarbage
+local collectgarbage = collectgarbage
 
 local abi = require "syscall.abi"
 
@@ -274,7 +274,7 @@ function h.modeflags(tab)
     local f = 0
     local a = split(",", str)
     if #a == 1 and str == str:upper() and str:sub(1,1) ~= "0" then return nil end -- this is to allow testing for presense, while catching errors
-    for i, v in ipairs(a) do
+    for _, v in ipairs(a) do
       local s = trim(v):upper()
       if #s == 0 then error("empty flag") end
       local val
@@ -300,7 +300,7 @@ function h.swapflags(tab)
     local f = 0
     local a = split(",", str)
     if #a == 1 and str == str:upper() then return nil end -- this is to allow testing for presense, while catching errors
-    for i, v in ipairs(a) do
+    for _, v in ipairs(a) do
       local s = trim(v):upper()
       if #s == 0 then error("empty flag") end
       if tonumber(s) then

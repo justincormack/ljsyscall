@@ -1,26 +1,9 @@
 -- This sets up the table of C functions
 -- For OSX we hope we do not need many overrides
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
-
-local abi = require "syscall.abi"
+local require, setmetatable, pcall = require, setmetatable, pcall
 
 local ffi = require "ffi"
-
-local voidp = ffi.typeof("void *")
-
-local function void(x)
-  return ffi.cast(voidp, x)
-end
-
--- basically all types passed to syscalls are int or long, so we do not need to use nicely named types, so we can avoid importing t.
-local int, long = ffi.typeof("int"), ffi.typeof("long")
-local uint, ulong = ffi.typeof("unsigned int"), ffi.typeof("unsigned long")
 
 local function inlibc_fn(k) return ffi.C[k] end
 

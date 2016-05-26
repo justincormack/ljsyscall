@@ -1,11 +1,7 @@
 -- This mirrors syscall.lua, but some differences
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, pairs, ipairs, pcall, type, table, string =
+require, error, tonumber, pairs, ipairs, pcall, type, table, string
 
 local ffi = require "ffi"
 
@@ -140,9 +136,7 @@ end
 
 require "syscall.rump.ffirump"
 
-local t, pt = S.types.t, S.types.pt
-
-local modinfo = ffi.typeof("struct modinfo")
+local t = S.types.t
 
 -- TODO make this explcitly refer to NetBSD error codes
 local function retbool(ret)
@@ -159,8 +153,7 @@ end
 S.rump = {}
 
 local h = require "syscall.helpers"
-local octal, multiflags, charflags, swapflags, strflag, atflag, modeflags
-  = h.octal, h.multiflags, h.charflags, h.swapflags, h.strflag, h.atflag, h.modeflags
+local strflag = h.strflag
 
 local c = {}
 
@@ -204,7 +197,6 @@ function S.rump.module(s)
 end
 
 local function loadmodules(ms)
-  local len = #ms
   local remains = #ms
   local succeeded = true
   while remains > 0 do

@@ -1,16 +1,11 @@
 -- tables of constants for OSX
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require = require
 
 local h = require "syscall.helpers"
 
-local octal, multiflags, charflags, swapflags, strflag, atflag, modeflags
-  = h.octal, h.multiflags, h.charflags, h.swapflags, h.strflag, h.atflag, h.modeflags
+local octal, multiflags, charflags, strflag, atflag, modeflags
+  = h.octal, h.multiflags, h.charflags, h.strflag, h.atflag, h.modeflags
 
 local c = {}
 

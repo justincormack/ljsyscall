@@ -1,11 +1,6 @@
 -- ffi definitions of Linux types
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, table = require, table
 
 local abi = require "syscall.abi"
 

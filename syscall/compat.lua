@@ -1,22 +1,14 @@
 -- Compatibility wrappers to add more commonality between different systems, plus define common functions from man(3)
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, tonumber, pairs =
+require, tonumber, pairs
 
 local function init(S) 
 
-local abi, types, c = S.abi, S.types, S.c
-local t, pt, s = types.t, types.pt, types.s
-
-local ffi = require "ffi"
+local types, c = S.types, S.c
+local t = types.t
 
 local h = require "syscall.helpers"
-
-local istype, mktype, getfd = h.istype, h.mktype, h.getfd
 
 if not S.creat then
   function S.creat(pathname, mode) return S.open(pathname, "CREAT,WRONLY,TRUNC", mode) end

@@ -2,12 +2,7 @@
 
 -- note that some functions may not be available in all, but so long as prototype is standard they can go here
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require = require
 
 local cdef = require "ffi".cdef
 

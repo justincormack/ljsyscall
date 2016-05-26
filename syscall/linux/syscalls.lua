@@ -1,17 +1,13 @@
 -- This is the actual system calls for Linux
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, tonumber, tostring, pairs, ipairs, type, string =
+require, tonumber, tostring, pairs, ipairs, type, string
 
 local abi = require "syscall.abi"
 
 return function(S, hh, c, C, types)
 
-local ret64, retnum, retfd, retbool, retptr, retiter = hh.ret64, hh.retnum, hh.retfd, hh.retbool, hh.retptr, hh.retiter
+local retnum, retfd, retbool, retptr, retiter = hh.retnum, hh.retfd, hh.retbool, hh.retptr, hh.retiter
 
 local ffi = require "ffi"
 local errno = ffi.errno
@@ -680,7 +676,7 @@ if not S.getpagesize then
     local fd, err = S.open("/dev/zero", "rdwr")
     if not fd then return nil, err end
     while sz < 4096 * 1024 + 1024 do
-      local mm, err = S.mmap(nil, sz, "read", "shared", fd, sz)
+      local mm, _ = S.mmap(nil, sz, "read", "shared", fd, sz)
       if mm then
         S.munmap(mm, sz)
         pagesize = sz

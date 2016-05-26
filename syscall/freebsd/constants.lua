@@ -1,11 +1,6 @@
 -- tables of constants for NetBSD
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string, select = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string, select
+local require = require
 
 local abi = require "syscall.abi"
 
@@ -13,8 +8,8 @@ local h = require "syscall.helpers"
 
 local bit = require "syscall.bit"
 
-local octal, multiflags, charflags, swapflags, strflag, atflag, modeflags
-  = h.octal, h.multiflags, h.charflags, h.swapflags, h.strflag, h.atflag, h.modeflags
+local octal, multiflags, charflags, strflag, atflag, modeflags
+  = h.octal, h.multiflags, h.charflags, h.strflag, h.atflag, h.modeflags
 
 local version = require "syscall.freebsd.version".version
 

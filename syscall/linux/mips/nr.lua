@@ -1,11 +1,6 @@
 -- MIPS syscall numbers
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, assert = require, assert
 
 -- these are different for different ABIs TODO add the rest, TODO maybe put them in different files
 

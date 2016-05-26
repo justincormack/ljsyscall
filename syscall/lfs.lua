@@ -2,12 +2,8 @@
 
 -- currently does not implement locks
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tostring, pairs =
+require, error, tostring, pairs
 
 -- TODO allow use eg with rump kernel, needs an initialisation option
 -- maybe return a table with a metatable that allows init or uses default if no init?

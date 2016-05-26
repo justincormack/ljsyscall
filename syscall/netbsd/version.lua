@@ -21,7 +21,6 @@ int rump_getversion(void);
 local sc = ffi.new("int[2]", 1, 3) -- kern.osrev
 local osrevision = ffi.new("int[1]")
 local lenp = ffi.new("unsigned long[1]", ffi.sizeof("int"))
-local major, minor
 local ok, res
 if abi.host == "netbsd" then
   ok, res = pcall(ffi.C.sysctl, sc, 2, osrevision, lenp, nil, 0)

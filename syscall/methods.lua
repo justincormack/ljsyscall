@@ -2,12 +2,7 @@
 -- cannot do this in types as the functions have not been defined yet (as they depend on types)
 -- well we could, by passing in the empty table for S, but this is more modular
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, ipairs, type = require, ipairs, type
 
 local function init(S)
 
@@ -16,8 +11,6 @@ local abi = S.abi
 local c = S.c
 local types = S.types
 local t, s, pt = types.t, types.s, types.pt
-
-local bit = require "syscall.bit"
 
 local ffi = require "ffi"
 
