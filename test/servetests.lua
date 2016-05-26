@@ -123,7 +123,7 @@ local addrlen = t.socklen1(#ss)
 
 local function loop()
 
-for i, ev in ep:get() do
+for _, ev in ep:get() do
 
   if ep.eof(ev) then
     fd:close()

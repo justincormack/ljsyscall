@@ -4,16 +4,13 @@ local function init(S)
 
 local helpers = require "syscall.helpers"
 local types = S.types
-local c = S.c
 local abi = S.abi
 
-local bit = require "syscall.bit"
-local ffi = require "ffi"
-
-local t, pt, s = types.t, types.pt, types.s
+local t = types.t
 
 local assert = helpers.assert
 
+--[[
 local function fork_assert(cond, err, ...) -- if we have forked we need to fail in main thread not fork
   if not cond then
     print(tostring(err))
@@ -23,22 +20,23 @@ local function fork_assert(cond, err, ...) -- if we have forked we need to fail 
   if cond == true then return ... end
   return cond, ...
 end
+--]]
 
 local function assert_equal(...)
   collectgarbage("collect") -- force gc, to test for bugs
   return assert_equals(...)
 end
 
-local teststring = "this is a test string"
-local size = 512
-local buf = t.buffer(size)
+--local teststring = "this is a test string"
+--local size = 512
+--local buf = t.buffer(size)
 local tmpfile = "XXXXYYYYZZZ4521" .. S.getpid()
 local tmpfile2 = "./666666DDDDDFFFF" .. S.getpid()
 local tmpfile3 = "MMMMMTTTTGGG" .. S.getpid()
 local longfile = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" .. S.getpid()
 local efile = "./tmpexXXYYY" .. S.getpid() .. ".sh"
-local largeval = math.pow(2, 33) -- larger than 2^32 for testing
-local mqname = "ljsyscallXXYYZZ" .. S.getpid()
+--local largeval = math.pow(2, 33) -- larger than 2^32 for testing
+--local mqname = "ljsyscallXXYYZZ" .. S.getpid()
 
 local clean = function()
   S.rmdir(tmpfile)
@@ -179,14 +177,14 @@ test.kqueue = {
     assert_equal(n, 0) -- no events yet
     assert(S.unlink(tmpfile))
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 1)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 1)) do
       assert(v.DELETE, "expect delete event")
       count = count + 1
     end
     assert_equal(count, 1)
     assert(fd:write("something"))
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 1)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 1)) do
       assert(v.WRITE, "expect write event")
       assert(v.EXTEND, "expect extend event")
     count = count + 1
@@ -205,7 +203,7 @@ test.kqueue = {
     local str = "test"
     p2:write(str)
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 0)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 0)) do
       assert_equal(v.size, #str) -- size will be amount available to read
       count = count + 1
     end
@@ -215,7 +213,7 @@ test.kqueue = {
     assert_equal(n, 0) -- no events any more
     assert(p2:close())
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 0)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 0)) do
       assert(v.EOF, "expect EOF event")
       count = count + 1
     end
@@ -229,14 +227,14 @@ test.kqueue = {
     local kevs = t.kevents{{fd = p2, filter = "write", flags = "add"}}
     assert(kfd:kevent(kevs, nil))
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 0)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 0)) do
       assert(v.size > 0) -- size will be amount free in buffer
       count = count + 1
     end
     assert_equal(count, 1) -- one event
     assert(p1:close()) -- close read end
     count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 0)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 0)) do
       assert(v.EOF, "expect EOF event")
       count = count + 1
     end
@@ -249,7 +247,7 @@ test.kqueue = {
     local kevs = t.kevents{{ident = 0, filter = "timer", flags = "add, oneshot", data = 10}}
     assert(kfd:kevent(kevs, nil))
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs)) do
+    for _, v in assert(kfd:kevent(nil, kevs)) do
       assert_equal(v.size, 1) -- count of expiries is 1 as oneshot
       count = count + 1
     end
@@ -284,7 +282,7 @@ test.bsd_extattr = {
     assert_equal(n, #"myvalue")
     local str = assert(fd:extattr_get("user", "myattr"))
     assert_equal(str, "myvalue")
-    local ok = assert(fd:extattr_delete("user", "myattr"))
+    assert(fd:extattr_delete("user", "myattr"))
     local str, err = fd:extattr_get("user", "myattr")
     assert(not str and err.NOATTR)
     assert(fd:close())
@@ -302,7 +300,7 @@ test.bsd_extattr = {
     assert_equal(n, #"myvalue")
     local str = assert(S.extattr_get_file(tmpfile, "user", "myattr"))
     assert_equal(str, "myvalue")
-    local ok = assert(S.extattr_delete_file(tmpfile, "user", "myattr"))
+    assert(S.extattr_delete_file(tmpfile, "user", "myattr"))
     local str, err = S.extattr_get_file(tmpfile, "user", "myattr")
     assert(not str and err.NOATTR)
     assert(S.unlink(tmpfile))
@@ -319,7 +317,7 @@ test.bsd_extattr = {
     assert_equal(n, #"myvalue")
     local str = assert(S.extattr_get_link(tmpfile, "user", "myattr"))
     assert_equal(str, "myvalue")
-    local ok = assert(S.extattr_delete_link(tmpfile, "user", "myattr"))
+    assert(S.extattr_delete_link(tmpfile, "user", "myattr"))
     local str, err = S.extattr_get_link(tmpfile, "user", "myattr")
     assert(not str and err.NOATTR)
     assert(S.unlink(tmpfile))
@@ -407,7 +405,7 @@ if not S.__rump then
       assert(kfd:kevent(kevs, nil))
       assert(S.kill(pid, "term"))
       local count = 0
-      for k, v in assert(kfd:kevent(nil, kevs, 1)) do
+      for _, v in assert(kfd:kevent(nil, kevs, 1)) do
         assert(v.EXIT)
         count = count + 1
       end
@@ -424,7 +422,7 @@ if not S.__rump then
     assert(S.kill(0, "alrm"))
     assert(S.kill(0, "alrm"))
     local count = 0
-    for k, v in assert(kfd:kevent(nil, kevs, 1)) do
+    for _, v in assert(kfd:kevent(nil, kevs, 1)) do
       assert_equal(v.data, 2) -- event happened twice
       count = count + 1
     end

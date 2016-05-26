@@ -6,9 +6,8 @@ local abi = require "syscall.abi"
 
 local S = require "syscall"
 
-local abi = S.abi
 local types = S.types
-local t, ctypes, s = types.t, types.ctypes, types.s
+local ctypes = types.ctypes
 local c = S.c
  
 local ffi = require "ffi"

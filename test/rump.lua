@@ -3,16 +3,7 @@
 
 local function init(S)
 
-local helpers = require "syscall.helpers"
 local types = S.types
-local c = S.c
-local abi = S.abi
-local util = S.util
-
-local bit = require "syscall.bit"
-local ffi = require "ffi"
-
-local t, pt, s = types.t, types.pt, types.s
 
 local function assert(cond, err, ...)
   collectgarbage("collect") -- force gc, to test for bugs
@@ -33,7 +24,7 @@ test.rump_threads = {
   test_create_thread = function()
     local origlwp = assert(S.rump.curlwp()) -- we do not run tests in implicit context, so should not fail
     assert(S.rump.newlwp(S.getpid()))
-    local lwp1 = assert(S.rump.curlwp(), "should get a pointer back")
+    --[[local lwp1 = --]] assert(S.rump.curlwp(), "should get a pointer back")
     S.rump.releaselwp()
     S.rump.switchlwp(origlwp)
   end,
