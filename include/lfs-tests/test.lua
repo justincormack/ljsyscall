@@ -113,7 +113,7 @@ io.flush()
 
 -- Checking text/binary modes (only has an effect in Windows)
 local f = io.open(tmpfile, "w")
-local result, mode = lfs.setmode(f, "binary")
+local result, _ = lfs.setmode(f, "binary")
 assert(result) -- on non-Windows platforms, mode is always returned as "binary"
 result, mode = lfs.setmode(f, "text")
 assert(result and mode == "binary")
@@ -148,8 +148,8 @@ io.flush()
 
 -- Stressing directory iterator
 count = 0
-for i = 1, 4000 do
-        for file in lfs.dir (tmp) do
+for _ = 1, 4000 do
+        for _ in lfs.dir (tmp) do
                 count = count + 1
         end
 end
@@ -159,8 +159,8 @@ io.flush()
 
 -- Stressing directory iterator, explicit version
 count = 0
-for i = 1, 4000 do
-  local iter, dir = lfs.dir(tmp)
+for _ = 1, 4000 do
+  local _, dir = lfs.dir(tmp)
   local file = dir:next()
   while file do
     count = count + 1
@@ -173,7 +173,7 @@ io.write(".")
 io.flush()
 
 -- directory explicit close
-local iter, dir = lfs.dir(tmp)
+local _, dir = lfs.dir(tmp)
 dir:close()
 assert(not pcall(dir.next, dir))
 print"Ok!"

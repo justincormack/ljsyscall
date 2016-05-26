@@ -182,7 +182,7 @@ end
 function assertError(f, ...)
 	-- assert that calling f with the arguments will raise an error
 	-- example: assertError( f, 1, 2 ) => f(1,2) should generate an error
-	local has_error, error_msg = not pcall( f, ... )
+	local has_error, _ = not pcall( f, ... )
 	if has_error then return end 
 	error( "No error generated", 2 )
 end
@@ -282,7 +282,7 @@ local UnitResult = { -- class
 		end
 	end
 
-	function UnitResult:displayFailure(errorMsg)
+	function UnitResult:displayFailure(--[[errorMsg--]])
 		if self.verbosity == 0 then
 			io.stdout:write("F")
 		else
@@ -324,7 +324,7 @@ local UnitResult = { -- class
 		if self.verbosity == 0 then print("") end
 		print("=========================================================")
 		self:displayFailedTests()
-		local failurePercent, successCount
+		local failurePercent
 		local totalTested = self.testCount - self.skipCount
 		if totalTested == 0 then
 			failurePercent = 0
@@ -430,11 +430,11 @@ local LuaUnit = {
 	function LuaUnit.wrapFunctions(...)
 		local testClass, testFunction
 		testClass = {}
-		local function storeAsMethod(idx, testName)
+		local function storeAsMethod(testName)
 			testFunction = _G[testName]
 			testClass[testName] = testFunction
 		end
-                for i, v in ipairs {...} do storeAsMethod(i, v) end
+                for _, v in ipairs {...} do storeAsMethod(v) end
 		
 		return testClass
 	end
@@ -460,7 +460,6 @@ local LuaUnit = {
 	end
 
     function LuaUnit:runTestMethod(aName, aClassInstance, aMethod)
-		local ok, errorMsg
 		-- example: runTestMethod( 'TestToto:test1', TestToto, TestToto.testToto(self) )
 		LuaUnit.result:startTest(aName)
 
@@ -479,7 +478,7 @@ local LuaUnit = {
                   tracemsg = debug.traceback()
                   return err
                 end
-        	local ok, errorMsg, ret = xpcall( aMethod, trace )
+                local ok, errorMsg, _ = xpcall( aMethod, trace )
 		if not ok then
 			errorMsg  = self.strip_luaunit_stack(errorMsg)
                         if type(errorMsg) == "string" and errorMsg:sub(-9):lower() == ": skipped" then
@@ -566,7 +565,7 @@ local LuaUnit = {
 						end
 					end
 				end
-				for i, val in orderedPairs(testClassList) do 
+				for _, val in orderedPairs(testClassList) do
 					LuaUnit:runTestClassByName(val)
 				end
 			end
