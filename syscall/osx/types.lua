@@ -5,7 +5,7 @@ require, tonumber, setmetatable, pairs, type
 
 local function init(types)
 
-local t, pt, = types.t, types.pt
+local t, pt = types.t, types.pt
 
 local ffi = require "ffi"
 local bit = require "syscall.bit"

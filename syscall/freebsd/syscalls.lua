@@ -15,7 +15,7 @@ local h = require "syscall.helpers"
 
 local getfd = h.getfd
 
-local t, pt, = types.t, types.pt
+local t, pt = types.t, types.pt
 
 function S.reboot(howto) return C.reboot(c.RB[howto]) end
 

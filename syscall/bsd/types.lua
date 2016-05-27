@@ -5,14 +5,14 @@ require, error, tonumber, pairs, type
 
 local function init(c, types)
 
-local t, pt, s, = types.t, types.pt, types.s
+local t, pt, s = types.t, types.pt, types.s
 
 local ffi = require "ffi"
 local bit = require "syscall.bit"
 
 local h = require "syscall.helpers"
 
-local addtype, addtype_var, = h.addtype, h.addtype_var
+local addtype, addtype_var = h.addtype, h.addtype_var
 local reviter, mktype, lenmt, getfd, newfn
   = h.reviter, h.mktype, h.lenmt, h.getfd, h.newfn
 local ntohs, htons = h.ntohs, h.htons

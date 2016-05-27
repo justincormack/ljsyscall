@@ -12,7 +12,7 @@ local bit = require "syscall.bit"
 
 local h = require "syscall.helpers"
 
-local addtype, addtype_fn, = h.addtype, h.addtype_fn
+local addtype, addtype_fn = h.addtype, h.addtype_fn
 local lenfn, lenmt, newfn = h.lenfn, h.lenmt, h.newfn
 local octal = h.octal
 
