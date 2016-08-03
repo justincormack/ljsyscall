@@ -1,19 +1,12 @@
 -- fcntl is one of those bits of the Unix API that is a bit random, so give it its own file
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, tonumber = require, tonumber
 
 local function init(types)
 
 local c = require "syscall.linux.constants"
 
-local ffi = require "ffi"
-
-local t, pt, s = types.t, types.pt, types.s
+local t = types.t
 
 local fcntl = {
   commands = {

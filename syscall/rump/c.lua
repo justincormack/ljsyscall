@@ -2,18 +2,12 @@
 
 -- TODO merge into NetBSD ones, generate
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, pairs, string =
+require, pairs, string
 
 local abi = require "syscall.abi"
 
 local h = require "syscall.helpers"
-local err64 = h.err64
-local errpointer = h.errpointer
 
 local ffi = require "ffi"
 

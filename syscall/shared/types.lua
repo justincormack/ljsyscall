@@ -1,11 +1,7 @@
 -- this module defines the types with metatypes that are always common, so do not get errors redefining metatypes
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, pairs, ipairs, type, table, string =
+require, error, tonumber, pairs, ipairs, type, table, string
 
 local ffi = require "ffi"
 
@@ -16,13 +12,11 @@ local types = {t = t, pt = pt, s = s, ctypes = ctypes}
 
 local h = require "syscall.helpers"
 
-local addtype, addtype_var, addtype_fn, addraw2 = h.addtype, h.addtype_var, h.addtype_fn, h.addraw2
+local addtype, addtype_var = h.addtype, h.addtype_var
 local addtype1, addtype2, addptrtype = h.addtype1, h.addtype2, h.addptrtype
-local ptt, reviter, mktype, istype, lenfn, lenmt, getfd, newfn
-  = h.ptt, h.reviter, h.mktype, h.istype, h.lenfn, h.lenmt, h.getfd, h.newfn
-local ntohl, ntohl, ntohs, htons, htonl = h.ntohl, h.ntohl, h.ntohs, h.htons, h.htonl
-local split, trim, strflag = h.split, h.trim, h.strflag
-local align = h.align
+local lenfn, newfn = h.lenfn, h.newfn
+local htons, htonl = h.htons, h.htonl
+local split, strflag = h.split, h.strflag
 
 local addtypes = {
   char = "char",
@@ -160,7 +154,7 @@ local function inet6_ntop(src)
     parts[start] = ""
     if start == 1 or start + max == 9 then parts[start] = ":" end
     if start == 1 and start + max == 9 then parts[start] = "::" end 
-    for i = 1, max - 1 do table.remove(parts, start + 1) end
+    for _ = 1, max - 1 do table.remove(parts, start + 1) end
   end
 
   return table.concat(parts, ":")

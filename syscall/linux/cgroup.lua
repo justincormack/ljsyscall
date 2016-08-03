@@ -1,20 +1,12 @@
 -- Linux cgroup API
 -- this is all file system operations packaged up to be easier to use
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, tostring = require, tostring
 
 local function init(S)
 
 local h = require "syscall.helpers"
 local split = h.split
-
-local abi, types, c = S.abi, S.types, S.c
-local t, pt, s = types.t, types.pt, types.s
 
 local util = S.util
 

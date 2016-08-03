@@ -4,12 +4,7 @@
 
 -- TODO not sure we want these long term, merge to individual OS files.
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, table = require, table
 
 local ffi = require "ffi"
 

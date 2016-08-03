@@ -4,16 +4,12 @@ local function init(S)
 
 local helpers = require "syscall.helpers"
 local types = S.types
-local c = S.c
-local abi = S.abi
 
-local bit = require "syscall.bit"
-local ffi = require "ffi"
-
-local t, pt, s = types.t, types.pt, types.s
+local t = types.t
 
 local assert = helpers.assert
 
+--[[
 local function fork_assert(cond, err, ...) -- if we have forked we need to fail in main thread not fork
   if not cond then
     print(tostring(err))
@@ -28,18 +24,20 @@ local function assert_equal(...)
   collectgarbage("collect") -- force gc, to test for bugs
   return assert_equals(...)
 end
+--]]
 
-local teststring = "this is a test string"
+--local teststring = "this is a test string"
 local size = 512
-local buf = t.buffer(size)
+--local buf = t.buffer(size)
 local tmpfile = "XXXXYYYYZZZ4521" .. S.getpid()
 local tmpfile2 = "./666666DDDDDFFFF" .. S.getpid()
 local tmpfile3 = "MMMMMTTTTGGG" .. S.getpid()
 local longfile = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" .. S.getpid()
 local efile = "./tmpexXXYYY" .. S.getpid() .. ".sh"
-local largeval = math.pow(2, 33) -- larger than 2^32 for testing
-local mqname = "ljsyscallXXYYZZ" .. S.getpid()
+--local largeval = math.pow(2, 33) -- larger than 2^32 for testing
+--local mqname = "ljsyscallXXYYZZ" .. S.getpid()
 
+--[[
 local clean = function()
   S.rmdir(tmpfile)
   S.unlink(tmpfile)
@@ -48,6 +46,7 @@ local clean = function()
   S.unlink(longfile)
   S.unlink(efile)
 end
+--]]
 
 local test = {}
 
@@ -55,7 +54,7 @@ test.time = {
   -- example of how to emulate clock_gettime() https://gist.github.com/jbenet/1087739
   test_clock_get_time = function()
     local clock = assert(S.host_get_clock_service(S.mach_host_self(), "CALENDAR"))
-    local mts = assert(S.clock_get_time(clock))
+    --[[local mts = --]] assert(S.clock_get_time(clock))
     assert(S.mach_port_deallocate(nil, clock)) -- TODO this should be gc
   end
 }

@@ -1,15 +1,10 @@
 -- NetBSD utility functions
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, assert = require, assert
 
 local function init(S)
 
-local abi, types, c = S.abi, S.types, S.c
+local types, c = S.types, S.c
 local t, pt, s = types.t, types.pt, types.s
 
 local h = require "syscall.helpers"
@@ -19,8 +14,6 @@ local ffi = require "ffi"
 
 local bit = require "syscall.bit"
 
-local octal = h.octal
-
 -- TODO move to helpers? see notes in syscall.lua about reworking though
 local function istype(tp, x)
   if ffi.istype(tp, x) then return x end
@@ -28,8 +21,6 @@ local function istype(tp, x)
 end
 
 local util = {}
-
-local mt = {}
 
 -- initial implementation of network ioctls, no real attempt to make it compatible with Linux...
 -- initially just implement the ones from rump netconfig, make interface later
@@ -121,6 +112,7 @@ function util.kdump(buf, len)
   return kdumpfn(len), buf, 0
 end
 
+--[[
 local function do_bridge_setcmd(name, op, arg)
   return sockioctl("inet", "dgram", "SIOCSDRVSPEC", {name = name, cms = op, data = arg})
 end
@@ -129,6 +121,7 @@ local function do_bridge_getcmd(name, op, arg) -- TODO should allocate correct a
   if not data then return nil, err end
   return arg
 end
+--]]
 
 return util
 

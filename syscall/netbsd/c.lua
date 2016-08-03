@@ -1,14 +1,7 @@
 -- This sets up the table of C functions for BSD
 -- We need to override functions that are versioned as the old ones selected otherwise
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
-
-local abi = require "syscall.abi"
+local require, setmetatable, pcall = require, setmetatable, pcall
 
 local version = require "syscall.netbsd.version".version
 

@@ -3,25 +3,21 @@
 -- these are generally equivalent to things that are in man(1) or man(3)
 -- these can be made more modular as number increases
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, tostring, setmetatable, pairs, ipairs,
+table, string =
+require, error, tonumber, tostring, setmetatable, pairs, ipairs,
+table, string
 
 local function init(S)
 
 local h = require "syscall.helpers"
-local htonl = h.htonl
 
 local ffi = require "ffi"
-local bit = require "syscall.bit"
 
-local abi, types, c = S.abi, S.types, S.c
-local t, pt, s = types.t, types.pt, types.s
+local abi, types = S.abi, S.types
+local t = types.t
 
-local mt, meth = {}, {}
+local mt  = {}
 
 local util = require("syscall." .. abi.os .. ".util").init(S)
 
@@ -252,7 +248,7 @@ function util.recvcmsg(fd, msg, flags)
   local count, err = S.recvmsg(fd, msg, flags)
   if not count then return nil, err end
   local ret = {count = count, iovec = msg.msg_iov} -- thats the basic return value, and the iovec
-  for mc, cmsg in msg:cmsgs() do
+  for _, cmsg in msg:cmsgs() do
     local pid, uid, gid = cmsg:credentials()
     if pid then
       ret.pid = pid

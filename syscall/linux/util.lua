@@ -5,12 +5,8 @@
 
 -- TODO rework so that items can be methods on fd again, for eventfd, timerfd, signalfd and tty
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, assert, tonumber, tostring, setmetatable, pairs, type =
+require, assert, tonumber, tostring, setmetatable, pairs, type
 
 local function init(S)
 
@@ -22,8 +18,6 @@ local h = require "syscall.helpers"
 local ffi = require "ffi"
 
 local bit = require "syscall.bit"
-
-local octal = h.octal
 
 -- TODO move to helpers? see notes in syscall.lua about reworking though
 local function istype(tp, x)
@@ -73,7 +67,7 @@ function util.bridge_add(name) return bridge_ioctl("SIOCBRADDBR", name) end
 function util.bridge_del(name) return bridge_ioctl("SIOCBRDELBR", name) end
 
 local function bridge_if_ioctl(io, name, dev)
-  local err, s, ifr, len, ret, ok
+  local err, s, ifr, ret, ok
   s, err = S.socket(c.AF.LOCAL, c.SOCK.STREAM, 0)
   if not s then return nil, err end
   if type(dev) == "string" then
@@ -112,7 +106,7 @@ local function brinfo(d) -- can be used as subpart of general interface info
     end
   end
 
-  local brif, err = util.dirtable("/sys/class/net/" .. d .. "/" .. c.SYSFS_BRIDGE_PORT_SUBDIR, true)
+  local brif, _ = util.dirtable("/sys/class/net/" .. d .. "/" .. c.SYSFS_BRIDGE_PORT_SUBDIR, true)
   if not brif then return nil end
 
   local fdb = "/sys/class/net/" .. d .. "/" .. c.SYSFS_BRIDGE_FDB

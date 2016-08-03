@@ -1,19 +1,12 @@
 -- This are the types for FreeBSD
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, table = require, table
 
 local abi = require "syscall.abi"
 
 local ffi = require "ffi"
 
 require "syscall.ffitypes"
-
-local version = require "syscall.freebsd.version".version
 
 local defs = {}
 

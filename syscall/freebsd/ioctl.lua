@@ -1,11 +1,6 @@
 -- ioctls, filling in as needed
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, type = require, type
 
 local function init(types)
 
@@ -21,7 +16,6 @@ local function bor(...)
   return r
 end
 local lshift = bit.lshift
-local rshift = bit.rshift
 
 local IOC = {
   VOID  = 0x20000000,

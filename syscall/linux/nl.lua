@@ -1,11 +1,9 @@
 -- modularize netlink code as it is large and standalone
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, tostring, setmetatable, pairs, ipairs, unpack,
+type, table, string =
+require, error, tonumber, tostring, setmetatable, pairs, ipairs, unpack,
+type, table, string
 
 local function init(S)
 
@@ -21,7 +19,6 @@ local util = S.util
 local types = S.types
 local c = S.c
 
-local htonl = h.htonl
 local align = h.align
 
 local t, pt, s = types.t, types.pt, types.s
@@ -45,7 +42,6 @@ local meth = {}
 -- similar functions for netlink messages
 local function nlmsg_align(len) return align(len, 4) end
 local nlmsg_hdrlen = nlmsg_align(s.nlmsghdr)
-local function nlmsg_length(len) return len + nlmsg_hdrlen end
 local function nlmsg_ok(msg, len)
   return len >= nlmsg_hdrlen and msg.nlmsg_len >= nlmsg_hdrlen and msg.nlmsg_len <= len
 end
@@ -425,7 +421,7 @@ mt.routes = {
   end,
   __tostring = function(is)
     local s = {}
-    for k, v in ipairs(is) do
+    for _, v in ipairs(is) do
       s[#s + 1] = tostring(v)
     end
     return table.concat(s, '\n')
@@ -1006,16 +1002,6 @@ function nl.routes(af, tp)
   r.family = af
   r.tp = tp
   return r
-end
-
-local function preftable(tab, prefix)
-  for k, v in pairs(tab) do
-    if k:sub(1, #prefix) ~= prefix then
-      tab[prefix .. k] = v
-      tab[k] = nil
-    end
-  end
-  return tab
 end
 
 function nl.newroute(flags, rtm, ...)

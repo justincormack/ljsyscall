@@ -2,12 +2,8 @@
 -- note that where functions are identical if present but may be missing they can also go here
 -- note that OS specific calls are loaded at the end so they may override generic calls here
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, error, tonumber, ipairs, type, table =
+require, error, tonumber, ipairs, type, table
 
 local abi = require "syscall.abi"
 local ffi = require "ffi"
@@ -16,7 +12,7 @@ local bit = require "syscall.bit"
 local h = require "syscall.helpers"
 local err64 = h.err64
 local errpointer = h.errpointer
-local getfd, istype, mktype, reviter = h.getfd, h.istype, h.mktype, h.reviter
+local getfd, mktype, reviter = h.getfd, h.mktype, h.reviter
 
 local function init(C, c, types)
 
@@ -361,7 +357,7 @@ end
 -- fdset handlers
 local function mkfdset(fds, nfds) -- should probably check fd is within range (1024), or just expand structure size
   local set = t.fdset()
-  for i, v in ipairs(fds) do
+  for _, v in ipairs(fds) do
     local fd = tonumber(getfd(v))
     if fd + 1 > nfds then nfds = fd + 1 end
     local fdelt = bit.rshift(fd, 5) -- always 32 bits
@@ -372,7 +368,7 @@ end
 
 local function fdisset(fds, set)
   local f = {}
-  for i, v in ipairs(fds) do
+  for _, v in ipairs(fds) do
     local fd = tonumber(getfd(v))
     local fdelt = bit.rshift(fd, 5) -- always 32 bits
     if bit.band(set.fds_bits[fdelt], bit.lshift(1, fd % 32)) ~= 0 then table.insert(f, v) end -- careful not to duplicate fd objects

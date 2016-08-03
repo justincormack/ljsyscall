@@ -2,22 +2,14 @@
 -- will cover iptables, ip6tables, ebtables, arptables eventually
 -- even less documentation than for netlink but it does not look too bad...
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require = require
 
 local nf = {} -- exports
 
-local ffi = require "ffi"
-local bit = require "syscall.bit"
 local S = require "syscall"
-local helpers = require "syscall.helpers"
 local c = S.c
 local types = S.types
-local t, pt, s = types.t, types.pt, types.s
+local t, s = types.t, types.s
 
 function nf.socket(family)
   return S.socket(family, "raw", "raw")

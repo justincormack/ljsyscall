@@ -1,12 +1,7 @@
 -- ioctls, filling in as needed
 -- note there are some architecture dependent values
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, pairs, type, string = require, pairs, type, string
 
 local function init(types)
 
@@ -20,14 +15,14 @@ local arch = require("syscall.linux." .. abi.arch .. ".ioctl")
 
 local bit = require "syscall.bit"
 
-local band = bit.band
+--local band = bit.band
 local function bor(...)
   local r = bit.bor(...)
   if r < 0 then r = r + 4294967296 end -- TODO see note in NetBSD
   return r
 end
 local lshift = bit.lshift
-local rshift = bit.rshift
+--local rshift = bit.rshift
 
 -- these can vary by architecture
 local IOC = arch.IOC or {
@@ -86,18 +81,20 @@ local _IOW   = function(ch, nr, tp)	return _IOC(IOC.WRITE, ch, nr, tp) end
 local _IOWR  = function(ch, nr, tp)	return _IOC(IOC.READWRITE, ch, nr, tp) end
 
 -- used to decode ioctl numbers..
+--[[
 local _IOC_DIR  = function(nr) return band(rshift(nr, IOC.DIRSHIFT), IOC.DIRMASK) end
 local _IOC_TYPE = function(nr) return band(rshift(nr, IOC.TYPESHIFT), IOC.TYPEMASK) end
 local _IOC_NR   = function(nr) return band(rshift(nr, IOC.NRSHIFT), IOC.NRMASK) end
 local _IOC_SIZE = function(nr) return band(rshift(nr, IOC.SIZESHIFT), IOC.SIZEMASK) end
+--]]
 
 -- ...and for the drivers/sound files...
 
 IOC.IN		= lshift(IOC.WRITE, IOC.DIRSHIFT)
 IOC.OUT		= lshift(IOC.READ, IOC.DIRSHIFT)
 IOC.INOUT		= lshift(bor(IOC.WRITE, IOC.READ), IOC.DIRSHIFT)
-local IOCSIZE_MASK	= lshift(IOC.SIZEMASK, IOC.SIZESHIFT)
-local IOCSIZE_SHIFT	= IOC.SIZESHIFT
+--local IOCSIZE_MASK	= lshift(IOC.SIZEMASK, IOC.SIZESHIFT)
+--local IOCSIZE_SHIFT	= IOC.SIZESHIFT
 
 -- VFIO driver writer decided not to use standard IOR/IOW alas
 local function vfio(dir, nr, tp)
@@ -289,7 +286,7 @@ if type(override) == "function" then override = override(_IO, _IOR, _IOW, _IOWR)
 for k, v in pairs(override) do ioctl[k] = v end
 
 -- allow names for types in table ioctls
-for k, v in pairs(ioctl) do if type(v) == "table" and type(v.type) == "string" then v.type = t[v.type] end end
+for _, v in pairs(ioctl) do if type(v) == "table" and type(v.type) == "string" then v.type = t[v.type] end end
 
 -- alternate names
 ioctl.TIOCINQ = ioctl.FIONREAD

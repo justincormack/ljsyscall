@@ -16,7 +16,7 @@ local nr = require "syscall.linux.nr"
 local jit
 if pcall(require, "jit") then jit = require "jit" end
 
-local t, pt, s = types.t, types.pt, types.s
+local t = types.t
 
 local nl = S.nl
 
@@ -39,7 +39,7 @@ end
 
 local teststring = "this is a test string"
 local size = 512
-local buf = t.buffer(size)
+--local buf = t.buffer(size)
 local tmpfile = "XXXXYYYYZZZ4521" .. S.getpid()
 local tmpfile2 = "./666666DDDDDFFFF" .. S.getpid()
 local tmpfile3 = "MMMMMTTTTGGG" .. S.getpid()
@@ -76,7 +76,7 @@ test.signals = {
     assert(sv1:shutdown("rd"))
     assert(S.signal("pipe", "ign"))
     assert(sv2:close())
-    local n, err = sv1:write("will get sigpipe")
+    local _, err = sv1:write("will get sigpipe")
     assert(err.PIPE, "should get sigpipe")
     assert(sv1:close())
   end,
@@ -212,7 +212,7 @@ test.timers_linux = {
     assert(fd:close())
   end,
   test_time = function() -- this interface is not a syscall for other OSs, probably won't make compat interface
-    local tt = S.time()
+    S.time()
   end,
 }
 
@@ -407,14 +407,14 @@ test.ppoll = {
     local pev = t.pollfds{{fd = a, events = c.POLL.IN}}
     local p = assert(S.ppoll(pev, 0, nil))
     assert_equal(p, 0) -- no events yet
-    for k, v in ipairs(pev) do
+    for _, v in ipairs(pev) do
       assert_equal(v.fd, a:getfd())
       assert_equal(v.revents, 0)
     end
     assert(b:write(teststring))
     local p = assert(S.ppoll(pev, nil, "alrm"))
     assert_equal(p, 1) -- 1 event
-    for k, v in ipairs(pev) do
+    for _, v in ipairs(pev) do
       assert_equal(v.fd, a:getfd())
       assert(v.IN, "IN event now")
     end
@@ -784,7 +784,7 @@ test.events_epoll = {
   test_epoll_events_iter = function()
     local ev = t.epoll_events(8)
     local count = 0
-    for k, v in ipairs(ev) do count = count + 1 end
+    for _, _ in ipairs(ev) do count = count + 1 end
     assert_equal(count, 8)
   end,
   test_epoll_wait = function()
@@ -796,7 +796,7 @@ test.events_epoll = {
     assert(r == 0, "no events yet")
     assert(b:write(teststring))
     local count = 0
-    for k, v in assert(ep:epoll_wait(ev, 0)) do
+    for _, v in assert(ep:epoll_wait(ev, 0)) do
       count = count + 1
       assert(v.IN, "read event")
       assert(v.fd == a:getfd(), "expect to get fd of ready file back") -- by default our epoll_ctl sets this
@@ -816,7 +816,7 @@ test.events_epoll = {
     assert(r == 0, "no events yet")
     assert(b:write(teststring))
     local count = 0
-    for k, v in assert(ep:epoll_pwait(ev, 0, "alrm")) do
+    for _, v in assert(ep:epoll_pwait(ev, 0, "alrm")) do
       count = count + 1
       assert(v.IN, "read event")
       assert(v.fd == a:getfd(), "expect to get fd of ready file back") -- by default our epoll_ctl sets this
@@ -863,7 +863,7 @@ test.aio = {
     assert_equal(ret, 1)
     local ev = t.io_events(1)
     local count = 0
-    for k, v in assert(S.io_getevents(ctx, 1, ev)) do
+    for _, v in assert(S.io_getevents(ctx, 1, ev)) do
       assert_equal(tonumber(v.data), 42)
       assert_equal(tonumber(v.res), 4096)
       count = count + 1
@@ -888,7 +888,7 @@ test.aio = {
     assert_equal(ret, 1)
     local ev = t.io_events(1)
     local count = 0
-    for k, v in assert(S.io_getevents(ctx, 1, ev)) do
+    for _, v in assert(S.io_getevents(ctx, 1, ev)) do
       assert_equal(tonumber(v.data), 42)
       assert(tonumber(v.res) < 0) -- there is an error
       assert(v.error.FAULT) -- EFAULT as bad address
@@ -931,7 +931,7 @@ test.aio = {
     assert(fd:pwrite(abuf, 4096, 0))
     ffi.fill(abuf, 4096)
     local a = t.iocb_array{{opcode = "pread", data = 42, fildes = fd, buf = abuf, nbytes = 4096, offset = 0}}
-    local count = 0
+    --local count = 0
     assert(S.io_submit(ctx, a))
     -- erroring, giving EINVAL which is odd, man page says means ctx invalid TODO fix
     --local ok = assert(S.io_cancel(ctx, a.iocbs[1]))
@@ -962,7 +962,7 @@ test.aio = {
     assert_equal(ret, 1, "expect one event submitted")
     local ev = t.epoll_events(1)
     local count = 0
-    for k, v in assert(ep:epoll_wait(ev)) do
+    for _, v in assert(ep:epoll_wait(ev)) do
       count = count + 1
       assert(v.IN, "read event")
       assert(v.fd == efd:getfd(), "expect to get fd of eventfd file back")
@@ -972,7 +972,7 @@ test.aio = {
     assert_equal(e, 1, "expect to be told one aio event ready")
     local ev = t.io_events(1)
     local count = 0
-    for k, v in assert(S.io_getevents(ctx, 1, ev)) do
+    for _, v in assert(S.io_getevents(ctx, 1, ev)) do
       assert_equal(tonumber(v.data), 42, "expect to get our data back") -- luaffi needs tonumber() annoying that fields not namespaced
       assert_equal(tonumber(v.res), 4096, "expect to get full read")
       count = count + 1
@@ -1239,7 +1239,7 @@ test.xattr_linux = {
     -- table helpers
     local tt = assert(S.xattr(tmpfile))
     local n = 0
-    for k, v in pairs(tt) do n = n + 1 end
+    for _, _ in pairs(tt) do n = n + 1 end
     assert(n == nn, "expect no xattr now")
     tt = {}
     for k, v in pairs{test = "42", test2 = "44"} do tt["user." .. k] = v end
@@ -1247,7 +1247,7 @@ test.xattr_linux = {
     tt = assert(S.lxattr(tmpfile))
     assert(tt["user.test2"] == "44" and tt["user.test"] == "42", "expect to return values set")
     n = 0
-    for k, v in pairs(tt) do n = n + 1 end
+    for _, _ in pairs(tt) do n = n + 1 end
     assert(n == nn + 2, "expect 2 xattr now")
     tt = {}
     for k, v in pairs{test = "42", test2 = "44", test3="hello"} do tt["user." .. k] = v end
@@ -1255,7 +1255,7 @@ test.xattr_linux = {
     tt = assert(fd:fxattr())
     assert(tt["user.test2"] == "44" and tt["user.test"] == "42" and tt["user.test3"] == "hello", "expect to return values set")
     n = 0
-    for k, v in pairs(tt) do n = n + 1 end
+    for _, _ in pairs(tt) do n = n + 1 end
     assert(n == nn + 3, "expect 3 xattr now")
     assert(fd:close())
     assert(S.unlink(tmpfile))
@@ -1417,11 +1417,11 @@ if S.perf_event_open and not S.__rump then
     -- Trace getcwd() syscall
     reader:mmap()
     reader:start()
-    for i = 1,10 do S.getcwd() end
+    for _ = 1,10 do S.getcwd() end
     reader:stop()
     -- Read samples from mmap
     local cnt = 0;
-    for len,e in ipairs(reader) do
+    for _,e in ipairs(reader) do
       if e.type ~= c.PERF_RECORD.SAMPLE then break end
       -- Check if we're the caller
       e = ffi.cast(sample_t, e)

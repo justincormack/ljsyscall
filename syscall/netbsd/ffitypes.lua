@@ -1,21 +1,12 @@
 -- This is types for NetBSD and rump kernel, which are the same bar names.
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, table, string = require, table, string
 
 local abi = require "syscall.abi"
 
 local ffi = require "ffi"
 
 require "syscall.ffitypes"
-
-local helpers = require "syscall.helpers"
-
-local version = require "syscall.netbsd.version".version
 
 local defs = {}
 

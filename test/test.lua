@@ -138,7 +138,7 @@ local tmpdir = "FFFFGGGGHHH123" .. S.getpid()
 local longdir = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" .. S.getpid()
 local efile = "./tmpexXXYYY" .. S.getpid() .. ".sh"
 local largeval = math.pow(2, 33) -- larger than 2^32 for testing
-local mqname = "ljsyscallXXYYZZ" .. S.getpid()
+--local mqname = "ljsyscallXXYYZZ" .. S.getpid()
 
 local clean = function()
   S.rmdir(tmpfile)
@@ -158,7 +158,7 @@ end
 if ok then
 test_types_reflect = {
   test_allocate = function() -- create an element of every ctype
-    for k, v in pairs(t) do
+    for _, v in pairs(t) do
       if type(v) == "cdata" then
         local x
         if reflect.typeof(v).vla then
@@ -170,7 +170,7 @@ test_types_reflect = {
     end
   end,
   test_meta = function() -- read every __index metatype; unfortunately most are functions, so coverage not that useful yet
-    for k, v in pairs(t) do
+    for _, v in pairs(t) do
       if type(v) == "cdata" then
         local x
         if reflect.typeof(v).vla then
@@ -238,7 +238,7 @@ test_types_reflect = {
     assert_equal(allok, true)
   end,
   test_tostring = function()
-    for k, v in pairs(t) do
+    for _, v in pairs(t) do
       if type(v) == "cdata" then
         local x, s
         if reflect.typeof(v).vla then
@@ -368,7 +368,7 @@ test_open_close = {
     local fd = assert(S.open("/dev/null", "rdonly"))
     assert(fd:close())
     local fd2 = assert(S.open("/dev/zero")) -- reuses same fd
-    local ok, err = assert(fd:close()) -- this should not close fd again, but no error as does nothing
+    assert(fd:close()) -- this should not close fd again, but no error as does nothing
     assert(fd2:close()) -- this should succeed
   end,
   test_double_close = function()
@@ -500,14 +500,14 @@ test_poll_select = {
     local pev = t.pollfds{{fd = a, events = "in"}}
     local p = assert(S.poll(pev, 0))
     assert_equal(p, 0) -- no events
-    for k, v in ipairs(pev) do
+    for _, v in ipairs(pev) do
       assert_equal(v.fd, a:getfd())
       assert_equal(v.revents, 0)
     end
     assert(b:write(teststring))
     local p = assert(S.poll(pev, 0))
     assert_equal(p, 1) -- 1 event
-    for k, v in ipairs(pev) do
+    for _, v in ipairs(pev) do
       assert_equal(v.fd, a:getfd())
       assert(v.IN, "one IN event now")
     end

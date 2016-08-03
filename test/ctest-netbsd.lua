@@ -14,9 +14,8 @@ end
 
 local version = require "syscall.netbsd.version".version
 
-local abi = S.abi
 local types = S.types
-local t, ctypes, s = types.t, types.ctypes, types.s
+local ctypes = types.ctypes
 local c = S.c
 
 for k, v in pairs(ctypes) do

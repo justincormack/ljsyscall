@@ -1,18 +1,13 @@
 -- things that are libc only, not syscalls
 -- this file will not be included if not running with libc eg for rump
 
-local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
-require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+local require, pcall = require, pcall
 
 local function init(S)
 
 local c = S.c
 local types = S.types
-local t, s, pt = types.t, types.s, types.pt
+local t, pt = types.t, types.pt
 
 local ffi = require "ffi"
 

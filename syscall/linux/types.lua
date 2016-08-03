@@ -1,30 +1,25 @@
 -- Linux kernel types
 
 local require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string = 
+setmetatable, pairs, ipairs, type, table =
 require, error, assert, tonumber, tostring,
-setmetatable, pairs, ipairs, unpack, rawget, rawset,
-pcall, type, table, string
+setmetatable, pairs, ipairs, type, table
 
 -- TODO add __len to metatables of more
 
 local function init(types)
 
-local abi = require "syscall.abi"
-
-local t, pt, s, ctypes = types.t, types.pt, types.s, types.ctypes
+local t, pt, s = types.t, types.pt, types.s
 
 local ffi = require "ffi"
 local bit = require "syscall.bit"
 
 local h = require "syscall.helpers"
 
-local addtype, addtype_var, addtype_fn, addraw2 = h.addtype, h.addtype_var, h.addtype_fn, h.addraw2
-local ptt, reviter, mktype, istype, lenfn, lenmt, getfd, newfn
-  = h.ptt, h.reviter, h.mktype, h.istype, h.lenfn, h.lenmt, h.getfd, h.newfn
-local ntohl, ntohl, ntohs, htons = h.ntohl, h.ntohl, h.ntohs, h.htons
-local split, trim = h.split, h.trim
+local addtype, addtype_var = h.addtype, h.addtype_var
+local ptt, reviter, mktype, istype, lenmt, getfd, newfn
+  = h.ptt, h.reviter, h.mktype, h.istype, h.lenmt, h.getfd, h.newfn
+local ntohs, htons = h.ntohs, h.htons
 
 local c = require "syscall.linux.constants"
 
@@ -781,7 +776,7 @@ local function capflags(val, str)
   if not str then return val end
   if #str == 0 then return val end
   local a = h.split(",", str)
-  for i, v in ipairs(a) do
+  for _, v in ipairs(a) do
     local s = h.trim(v):upper()
     if not c.CAP[s] then error("invalid capability " .. s) end
     val[s] = true
