@@ -1,34 +1,25 @@
-Source: lua-
+Source: lua-ljsyscall
 Section: interpreters
 Priority: optional
-Maintainer: Enrico Tassi <gareuselesinge@debian.org>
-Build-Depends: debhelper (>= 9),  dh-lua
-Standards-Version: 3.9.3
-Homepage: 
-Vcs-Git: git://git.debian.org/git/pkg-lua/lua-.git
-Vcs-Browser: http://git.debian.org/?p=pkg-lua/lua-.git
+Maintainer: nobody
+Build-Depends: debhelper (>= 9), dh-lua
+Standards-Version: 4.0.0
+Homepage: http://www.myriabit.com/ljsyscall/
 
-Package: lua-
-Architecture: any
-Multi-Arch: same
+Package: lua-ljsyscall
+Architecture: all
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: luajit, ${misc:Depends}
 Provides: ${lua:Provides}
 XB-Lua-Versions: ${lua:Versions}
-Description: bla
- bla
+Description: LuaJIT Linux syscall FFI
 
-Package: lua--dev
+Package: lua-ljsyscall-dev
 Section: libdevel
-Multi-Arch: same
+Architecture: all
 Pre-Depends: ${misc:Pre-Depends}
-Architecture: any
-Depends: lua- (= ${binary:Version}), ${misc:Depends}
+Depends: ${misc:Depends}
 Provides: ${lua:Provides}
 XB-Lua-Versions: ${lua:Versions}
-Description: bla
- This package contains the development files of the ... library,
- useful to create a statically linked binary (like a C application or a
- standalone Lua interpreter).
- .
- Documentation is also shipped within this package.
+Description: ljsyscall doc
+ This package contains the documentation of the ljsyscall library.

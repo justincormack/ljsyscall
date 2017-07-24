@@ -1,14 +1,15 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: 
-Upstream-Contact: 
-Source: 
+Upstream-Name: ljsyscall
+Source: https://github.com/justincormack/ljsyscall
 
 Files: *
-Copyright: 
-Comment: In the Lua community this license is better known as "MIT".
-  Unfortunately other variants of this license are also known as "MIT".
-  To obtain a machine intepretable copyright file Debian prefers to name this
-  version of the MIT license using the non ambiguous term "Expat".
+Copyright: Copyright (C) 2011-2016 Justin Cormack. All rights reserved.
+License: Expat
+
+Files: */doc
+Copyright: Copyright (C) 2011-2016 Justin Cormack. All rights reserved.
+License: CC0
+
 License: Expat
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
