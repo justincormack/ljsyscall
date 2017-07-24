@@ -1,0 +1,34 @@
+Source: lua-
+Section: interpreters
+Priority: optional
+Maintainer: Enrico Tassi <gareuselesinge@debian.org>
+Build-Depends: debhelper (>= 9),  dh-lua
+Standards-Version: 3.9.3
+Homepage: 
+Vcs-Git: git://git.debian.org/git/pkg-lua/lua-.git
+Vcs-Browser: http://git.debian.org/?p=pkg-lua/lua-.git
+
+Package: lua-
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: ${lua:Provides}
+XB-Lua-Versions: ${lua:Versions}
+Description: bla
+ bla
+
+Package: lua--dev
+Section: libdevel
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Architecture: any
+Depends: lua- (= ${binary:Version}), ${misc:Depends}
+Provides: ${lua:Provides}
+XB-Lua-Versions: ${lua:Versions}
+Description: bla
+ This package contains the development files of the ... library,
+ useful to create a statically linked binary (like a C application or a
+ standalone Lua interpreter).
+ .
+ Documentation is also shipped within this package.
