@@ -189,6 +189,12 @@ local ioctl = strflag {
   SIOCDELRT       = 0x890C,
   SIOCRTMSG       = 0x890D,
 
+  SIOCGIFFLAGS    = 0x8913,
+  SIOCSIFFLAGS    = 0x8914,
+  SIOCGIFMTU      = 0x8921,
+  SIOCSIFMTU      = 0x8922,
+  SIOCSIFHWADDR   = 0x8924,
+  SIOCGIFHWADDR   = 0x8927,
   SIOCGIFINDEX    = 0x8933,
 
   SIOCDARP        = 0x8953,
