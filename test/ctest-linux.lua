@@ -114,6 +114,25 @@ c.IOCTL.PERF_EVENT_IOC_SET_FILTER = nil
 c.IOCTL.PERF_EVENT_IOC_ID = nil
 c.IOCTL.PERF_EVENT_IOC_SET_BPF = nil
 
+-- not in kernel headers used by Travis CI
+c.SOF.TIMESTAMPING_LAST = nil
+c.SOF.TIMESTAMPING_MASK = nil
+c.SOF.TIMESTAMPING_OPT_CMSG = nil
+c.SOF.TIMESTAMPING_OPT_ID = nil
+c.SOF.TIMESTAMPING_OPT_PKTINFO = nil
+c.SOF.TIMESTAMPING_OPT_STATS = nil
+c.SOF.TIMESTAMPING_OPT_TSONLY = nil
+c.SOF.TIMESTAMPING_OPT_TX_SWHW = nil
+c.SOF.TIMESTAMPING_RAW_HARDWARE = nil
+c.SOF.TIMESTAMPING_RX_HARDWARE = nil
+c.SOF.TIMESTAMPING_RX_SOFTWARE = nil
+c.SOF.TIMESTAMPING_SOFTWARE = nil
+c.SOF.TIMESTAMPING_SYS_HARDWARE = nil
+c.SOF.TIMESTAMPING_TX_ACK = nil
+c.SOF.TIMESTAMPING_TX_HARDWARE = nil
+c.SOF.TIMESTAMPING_TX_SCHED = nil
+c.SOF.TIMESTAMPING_TX_SOFTWARE = nil
+
 if abi.arch == "arm" then ctypes["struct statfs64"] = nil end -- padding difference, not that important
 
 for k, v in pairs(c.IOCTL) do if type(v) == "table" then c.IOCTL[k] = v.number end end
