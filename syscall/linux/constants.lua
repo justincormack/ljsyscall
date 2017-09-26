@@ -406,6 +406,12 @@ c.SOCK = multiflags(arch.SOCK or {
 c.SCM = strflag {
   RIGHTS = 0x01,
   CREDENTIALS = 0x02,
+
+  TSTAMP_SND   = 0,
+  TSTAMP_SCHED = 1,
+  TSTAMP_ACK   = 2,
+
+  TIMESTAMPING_OPT_STATS = 54,
 }
 
 -- setsockopt
@@ -481,6 +487,10 @@ c.SO = strflag(arch.SO or {
 
 c.SO.GET_FILTER = c.SO.ATTACH_FILTER
 c.SO.DETACH_BPF = c.SO.DETACH_FILTER
+
+c.SCM.TIMESTAMP    = c.SO.TIMESTAMP
+c.SCM.TIMESTAMPNS  = c.SO.TIMESTAMPNS
+c.SCM.TIMESTAMPING = c.SO.TIMESTAMPING
 
 -- Maximum queue length specifiable by listen.
 c.SOMAXCONN = 128
