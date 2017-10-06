@@ -836,6 +836,9 @@ struct rusage {
   long    ru_nvcsw;
   long    ru_nivcsw;
 };
+struct scm_timestamping {
+  struct timespec ts[3];
+};
 ]]
 
 append(arch.nsig or [[

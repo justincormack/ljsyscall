@@ -115,6 +115,7 @@ c.IOCTL.PERF_EVENT_IOC_ID = nil
 c.IOCTL.PERF_EVENT_IOC_SET_BPF = nil
 
 -- not in kernel headers used by Travis CI
+ctypes["struct scm_timestamping"] = nil
 c.SCM.TSTAMP_ACK = nil
 c.SCM.TSTAMP_SCHED = nil
 c.SCM.TSTAMP_SND = nil
