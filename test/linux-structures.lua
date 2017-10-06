@@ -74,6 +74,7 @@ local function fixup_structs(abi, ctypes)
   ctypes["struct perf_event_attr"] = nil -- too new for our headers
   ctypes["struct perf_event_header"] = nil -- too new for our headers
   ctypes["struct perf_event_mmap_page"] = nil -- too new for our headers
+  ctypes["struct scm_timestamping"] = nil -- too new for our headers
   ctypes["sigset_t"] = nil -- still some issues
 
   return ctypes

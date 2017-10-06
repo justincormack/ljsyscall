@@ -406,6 +406,12 @@ c.SOCK = multiflags(arch.SOCK or {
 c.SCM = strflag {
   RIGHTS = 0x01,
   CREDENTIALS = 0x02,
+
+  TSTAMP_SND   = 0,
+  TSTAMP_SCHED = 1,
+  TSTAMP_ACK   = 2,
+
+  TIMESTAMPING_OPT_STATS = 54,
 }
 
 -- setsockopt
@@ -482,8 +488,34 @@ c.SO = strflag(arch.SO or {
 c.SO.GET_FILTER = c.SO.ATTACH_FILTER
 c.SO.DETACH_BPF = c.SO.DETACH_FILTER
 
+c.SCM.TIMESTAMP    = c.SO.TIMESTAMP
+c.SCM.TIMESTAMPNS  = c.SO.TIMESTAMPNS
+c.SCM.TIMESTAMPING = c.SO.TIMESTAMPING
+
 -- Maximum queue length specifiable by listen.
 c.SOMAXCONN = 128
+
+c.SOF = strflag {
+  TIMESTAMPING_TX_HARDWARE  = bit.lshift(1, 0),
+  TIMESTAMPING_TX_SOFTWARE  = bit.lshift(1, 1),
+  TIMESTAMPING_RX_HARDWARE  = bit.lshift(1, 2),
+  TIMESTAMPING_RX_SOFTWARE  = bit.lshift(1, 3),
+  TIMESTAMPING_SOFTWARE     = bit.lshift(1, 4),
+  TIMESTAMPING_SYS_HARDWARE = bit.lshift(1, 5),
+  TIMESTAMPING_RAW_HARDWARE = bit.lshift(1, 6),
+  TIMESTAMPING_OPT_ID       = bit.lshift(1, 7),
+  TIMESTAMPING_TX_SCHED     = bit.lshift(1, 8),
+  TIMESTAMPING_TX_ACK       = bit.lshift(1, 9),
+  TIMESTAMPING_OPT_CMSG     = bit.lshift(1, 10),
+  TIMESTAMPING_OPT_TSONLY   = bit.lshift(1, 11),
+  TIMESTAMPING_OPT_STATS    = bit.lshift(1, 12),
+  TIMESTAMPING_OPT_PKTINFO  = bit.lshift(1, 13),
+  TIMESTAMPING_OPT_TX_SWHW  = bit.lshift(1, 14),
+}
+
+c.SOF.TIMESTAMPING_LAST = c.SOF.TIMESTAMPING_OPT_TX_SWHW
+c.SOF.TIMESTAMPING_MASK = bit.bor(c.SOF.TIMESTAMPING_LAST - 1,
+                                  c.SOF.TIMESTAMPING_LAST)
 
 -- shutdown
 c.SHUT = strflag {
