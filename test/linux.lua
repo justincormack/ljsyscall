@@ -1925,6 +1925,9 @@ test.processes_linux = {
       assert(status.EXITSTATUS == 23, "exit should be 23")
     end
   end,
+  test_tid = function()
+     assert(S.getpid() == S.gettid(), "PID should be the same as TID")
+  end,
 }
 test.scheduler = {
   test_getcpu = function()

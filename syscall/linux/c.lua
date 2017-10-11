@@ -175,6 +175,7 @@ end
 
 -- glibc caches pid, but this fails to work eg after clone().
 function C.getpid() return syscall(sys.getpid) end
+function C.gettid() return syscall(sys.gettid) end
 
 -- underlying syscalls
 function C.exit_group(status) return syscall(sys.exit_group, int(status)) end -- void return really
