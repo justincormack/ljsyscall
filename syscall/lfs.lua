@@ -47,12 +47,26 @@ local attributes = {
 }
 
 local function attr(st, aname)
-  if aname then
+  local valid_attributes
+  if aname==nil then
+    valid_attributes = attributes
+  elseif type(aname) == "string" then
     aname = attributes[aname]
     return st[aname]
+  elseif type(aname) == "table" then
+    local ret = {}
+    for _i, k in ipairs(aname) do
+      local v = attributes[k]
+      if v  then -- and ret[k]==nil ?
+        ret[k] = st[v]
+      end
+    end
+    return ret
+  else
+    valid_attributes={}
   end
   local ret = {}
-  for k, v in pairs(attributes) do ret[k] = st[v] end
+  for k, v in pairs(valid_attributes) do ret[k] = st[v] end
   return ret
 end
 
