@@ -764,6 +764,10 @@ test.netlink = {
     assert_equal(#n, 1)
     assert_equal(tostring(n[1].lladdr), "46:9d:c9:06:dd:dd")
     assert_equal(tostring(n[1].dst), "10.0.0.2")
+    assert_equal(tostring(n[1].dest), "10.0.0.2")
+    assert_equal(n[1].ifindex, i.dummy0.index)
+    assert_equal(n[1].state, c.NUD.PERMANENT)
+    assert_equal(n[1].flags, 0)
     assert(nl.delneigh(i.dummy0, {family = "inet"}, "dst", "10.0.0.2", "lladdr", "46:9d:c9:06:dd:dd"))
     assert(i.dummy0:delete())
   end,
