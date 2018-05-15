@@ -225,6 +225,7 @@ local function fixup_constants(abi, c)
   c.BPF_MAP = {}
   c.BPF_CMD = {}
   c.BPF_PROG = {}
+  c.BPF_ATTACH_TYPE = {}
   c.BPF.ALU64 = nil
   c.BPF.DW = nil
   c.BPF.JSGT = nil
