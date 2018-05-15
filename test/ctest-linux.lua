@@ -72,6 +72,7 @@ ctypes["union bpf_attr"] = nil
 c.BPF_MAP = {}
 c.BPF_CMD = {}
 c.BPF_PROG = {}
+c.BPF_ATTACH_TYPE = {}
 c.BPF.ALU64 = nil
 c.BPF.DW = nil
 c.BPF.JSGT = nil
