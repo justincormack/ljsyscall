@@ -103,7 +103,7 @@ local function dir_next(dir)
       dir.di, err = dir.fd:getdents(dir.buf, dir.size)
       if not dir.di then
         dir_close(dir)
-        error(tostring(err)) -- not sure how we are suppose to handle errors
+        return nil, tostring(err)
       end
       dir.first = true
     end
@@ -124,7 +124,9 @@ function lfs.dir(path)
   local size = 4096
   local buf = S.t.buffer(size)
   local fd, err = S.open(path, "directory, rdonly")
-  if err then return nil, tostring(err) end
+  if err then
+    error("cannot open "..tostring(path)..": "..tostring(err), 2)
+  end
   return dir_next, {size = size, buf = buf, fd = fd, next = dir_next, close = dir_close}
 end
 
