@@ -9,7 +9,7 @@ source =
 description =
 {
   summary = "Rump kernel support for LuaJIT syscall FFI";
-  homepage = "http://www.myriabit.com/ljsyscall/";
+  homepage = "https://github.com/justincormack/ljsyscall";
   license = "MIT";
 }
 dependencies =

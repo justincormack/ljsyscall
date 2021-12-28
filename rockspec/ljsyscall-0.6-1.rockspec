@@ -8,7 +8,7 @@ source =
 description =
 {
   summary = "LuaJIT Linux syscall FFI";
-  homepage = "http://www.myriabit.com/ljsyscall/";
+  homepage = "https://github.com/justincormack/ljsyscall";
   license = "MIT";
 }
 dependencies =
