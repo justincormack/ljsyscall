@@ -46,25 +46,36 @@ local attributes = {
   blksize = "blksize",
 }
 
-local function attr(st, aname)
-  if aname then
-    aname = attributes[aname]
-    return st[aname]
+local function workaround_luafilesystem_compat_device(result, request_name)
+  if (request_name=="dev" or request_name=="rdev") then
+    if pcall(function() return result.device end) then
+      return result.device
+    end
   end
-  local ret = {}
-  for k, v in pairs(attributes) do ret[k] = st[v] end
+  return result
+end
+
+local function attr(st, arg)
+  if type(arg)=="string" then
+    -- arg is the request_name
+    arg = attributes[arg]
+    return workaround_luafilesystem_compat_device(st[arg], arg)
+  end
+  -- arg is the result_table
+  local ret = arg or {}
+  for k, v in pairs(attributes) do ret[k] = workaround_luafilesystem_compat_device(st[v], v) end
   return ret
 end
 
-function lfs.attributes(filepath, aname)
+function lfs.attributes(filepath, request_name_or_result_table)
   local st, err = S.stat(filepath)
   if not st then return nil, tostring(err) end
-  return attr(st, aname)
+  return attr(st, request_name_or_result_table)
 end
-function lfs.symlinkattributes(filepath, aname)
+function lfs.symlinkattributes(filepath, request_name_or_result_table)
   local st, err = S.lstat(filepath)
   if not st then return nil, tostring(err) end
-  return attr(st, aname)
+  return attr(st, request_name_or_result_table)
 end
 
 lfs.chdir = lfswrap(S.chdir)
@@ -92,7 +103,7 @@ local function dir_next(dir)
       dir.di, err = dir.fd:getdents(dir.buf, dir.size)
       if not dir.di then
         dir_close(dir)
-        error(tostring(err)) -- not sure how we are suppose to handle errors
+        return nil, tostring(err)
       end
       dir.first = true
     end
@@ -113,7 +124,9 @@ function lfs.dir(path)
   local size = 4096
   local buf = S.t.buffer(size)
   local fd, err = S.open(path, "directory, rdonly")
-  if err then return nil, tostring(err) end
+  if err then
+    error("cannot open "..tostring(path)..": "..tostring(err), 2)
+  end
   return dir_next, {size = size, buf = buf, fd = fd, next = dir_next, close = dir_close}
 end
 
